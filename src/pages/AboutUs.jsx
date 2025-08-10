@@ -1,185 +1,281 @@
 import React from "react";
-import {
-  FaBalanceScale,
-  FaGavel,
-  FaHandshake,
-  FaUserTie,
-} from "react-icons/fa";
+import { motion } from "framer-motion";
+import { FaShieldAlt, FaChartLine, FaHandsHelping, FaUserCheck } from "react-icons/fa";
 import Navbar from "../Components/Navbar";
 import Footer from "../Components/Footer";
+import Staff1 from "../assets/teammembers/staff1.jpg";
+import Staff2 from "../assets/teammembers/staff2.jpg";
+import Staff3 from "../assets/teammembers/staff3.jpg";
+import Staff4 from "../assets/teammembers/staff4.jpg";
 
 const AboutUs = () => {
+  const teamMembers = [
+    { id: 1, name: "Nabeel Khan", role: "RCIC, MBA", image: Staff1 },
+    { id: 2, name: "Asmatullah Malik", role: "Accounts & Payroll", image: Staff2 },
+    { id: 3, name: "Maggie Romano", role: "Senior Case Manager", image: Staff3 },
+    { id: 4, name: "Roxanne Paraggua", role: "Business Development Manager", image: Staff4 }
+  ];
+
   const stats = [
-    { value: "550+", label: "Cases Won" },
-    { value: "20+", label: "Years Experience" },
-    { value: "98%", label: "Client Satisfaction" },
-    { value: "50+", label: "Expert Attorneys" },
+    { value: "5060+", label: "Clients" },
+    { value: "300+", label: "Google Reviews" },
+    { value: "10+", label: "Years Of Experience" },
   ];
 
   const values = [
     {
-      icon: <FaBalanceScale className="w-8 h-8 text-blue-600" />,
-      title: "Integrity",
-      description:
-        "We uphold the highest ethical standards in all our legal practices.",
+      icon: <FaShieldAlt className="w-8 h-8 text-blue-600" />,
+      title: "Regulated Firm",
+      description: "Adhering to highest standards set by CICC",
     },
     {
-      icon: <FaGavel className="w-8 h-8 text-blue-600" />,
-      title: "Excellence",
-      description:
-        "Committed to delivering exceptional legal services and results.",
+      icon: <FaChartLine className="w-8 h-8 text-blue-600" />,
+      title: "Proven Track Record",
+      description: "Consistently high approval rates across all categories",
     },
     {
-      icon: <FaHandshake className="w-8 h-8 text-blue-600" />,
-      title: "Client Focus",
-      description:
-        "Your success is our priority. We listen and tailor solutions to your needs.",
+      icon: <FaHandsHelping className="w-8 h-8 text-blue-600" />,
+      title: "Client Focused",
+      description: "Tailored immigration strategies for each client",
     },
     {
-      icon: <FaUserTie className="w-8 h-8 text-blue-600" />,
-      title: "Expertise",
-      description: "Deep legal knowledge combined with strategic thinking.",
+      icon: <FaUserCheck className="w-8 h-8 text-blue-600" />,
+      title: "Honest Assessments",
+      description: "Transparent about your eligibility and chances",
     },
   ];
+
+  const fadeIn = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
+  };
+
+  const staggerContainer = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2
+      }
+    }
+  };
 
   return (
     <>
       <Navbar />
       <div className="bg-white">
         {/* Hero Section */}
-        <div className="relative bg-gray-900 text-white">
-          <div className="absolute inset-0 bg-black opacity-50"></div>
-          <div className="max-w-7xl mx-auto px-4 py-32 sm:px-6 lg:px-8 relative">
-            <h1 className="text-4xl md:text-5xl font-bold mb-6">
-              About Our Law Firm
-            </h1>
-            <p className="text-xl max-w-3xl">
-              Delivering exceptional legal services with integrity and
-              dedication since 2005.
-            </p>
+        <motion.section 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.8 }}
+          className="relative bg-gradient-to-r from-blue-600 to-blue-800 text-white py-24"
+        >
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative text-center">
+            <motion.h1 
+              initial={{ y: -20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.2, duration: 0.8 }}
+              className="text-4xl md:text-5xl font-bold mb-6"
+            >
+              About North Vista Immigration
+            </motion.h1>
+            <motion.p
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.4, duration: 0.8 }}
+              className="text-xl max-w-3xl mx-auto"
+            >
+              As fully licensed Regulated Canadian Immigration Consultants (RCICs), we specialize in providing expert guidance for your Canadian immigration journey.
+            </motion.p>
           </div>
-        </div>
+        </motion.section>
 
         {/* Stats Section */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+        <motion.section 
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16"
+        >
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {stats.map((stat, index) => (
-              <div key={index} className="p-6 bg-gray-50 rounded-lg">
-                <p className="text-3xl font-bold text-blue-600">{stat.value}</p>
-                <p className="text-gray-600">{stat.label}</p>
-              </div>
+              <motion.div 
+                variants={fadeIn}
+                key={index} 
+                className="bg-white p-8 rounded-xl shadow-md border border-gray-100 text-center hover:shadow-lg transition-all duration-300"
+              >
+                <p className="text-4xl font-bold text-blue-600 mb-2">{stat.value}</p>
+                <p className="text-gray-700 font-medium">{stat.label}</p>
+              </motion.div>
             ))}
           </div>
-        </div>
+        </motion.section>
 
         {/* Our Story Section */}
-        <div className="bg-gray-50 py-16">
+        <motion.section 
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+          className="bg-gray-50 py-16"
+        >
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="lg:grid lg:grid-cols-2 lg:gap-16 items-center">
-              <div className="mb-12 lg:mb-0">
+            <div className="lg:grid lg:grid-cols-2 lg:gap-12 items-center">
+              <motion.div 
+                initial={{ x: -20, opacity: 0 }}
+                whileInView={{ x: 0, opacity: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6 }}
+                className="mb-12 lg:mb-0"
+              >
                 <h2 className="text-3xl font-bold text-gray-900 mb-6">
-                  Our Story
+                  Our Commitment
                 </h2>
-                <p className="text-gray-600 mb-4">
-                  Founded in 1995, our law firm began as a small practice with a
-                  big vision: to provide exceptional legal services with
-                  uncompromising integrity. What started with just three
-                  attorneys has grown into one of the region's most respected
-                  full-service law firms.
+                <p className="text-gray-700 mb-4 text-lg">
+                  With years of experience navigating Canada's complex immigration system, our team stays current with all 2025 program updates and policy changes to ensure clients receive accurate, up-to-date advice.
                 </p>
-                <p className="text-gray-600 mb-4">
-                  Over the past 25+ years, we've successfully represented
-                  thousands of clients in complex legal matters, always
-                  maintaining our commitment to personalized service and
-                  outstanding results.
+                <p className="text-gray-700 mb-4 text-lg">
+                  What sets us apart is our commitment to transparency, ethical practices, and client-focused service. We provide honest assessments of each client's eligibility and chances of success, never making false promises.
                 </p>
-                <p className="text-gray-600">
-                  Today, our team of 50+ attorneys continues this tradition of
-                  excellence across all practice areas, combining deep legal
-                  expertise with innovative solutions for our clients.
+                <p className="text-gray-700 text-lg">
+                  Our consultants take the time to understand each client's unique circumstances and goals to develop tailored immigration strategies.
                 </p>
-              </div>
-              <div className="rounded-lg overflow-hidden shadow-xl">
+              </motion.div>
+              <motion.div 
+                initial={{ x: 20, opacity: 0 }}
+                whileInView={{ x: 0, opacity: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6 }}
+                className="rounded-xl overflow-hidden shadow-xl"
+              >
                 <img
-                  src="https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=800&auto=format&fit=crop"
-                  alt="Law firm building"
-                  className="w-full h-auto"
+                  src="https://images.unsplash.com/photo-1523289333742-be1143f6b766?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
+                  alt="Immigration consultation"
+                  className="w-full h-auto object-cover"
                 />
-              </div>
+              </motion.div>
             </div>
           </div>
-        </div>
+        </motion.section>
 
         {/* Our Values Section */}
-        <div className="py-16">
+        <motion.section 
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          className="py-16 bg-white"
+        >
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-3xl font-bold text-center text-gray-900 mb-16">
-              Our Core Values
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <motion.h2 
+              variants={fadeIn}
+              className="text-3xl font-bold text-center text-gray-900 mb-16"
+            >
+              Why Choose Us
+            </motion.h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {values.map((value, index) => (
-                <div
+                <motion.div
+                  variants={fadeIn}
                   key={index}
-                  className="text-center p-6 hover:bg-gray-50 rounded-lg transition-all duration-300"
+                  className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300 text-center"
                 >
                   <div className="flex justify-center mb-4">{value.icon}</div>
-                  <h3 className="text-xl font-semibold mb-3">{value.title}</h3>
+                  <h3 className="text-xl font-semibold mb-3 text-gray-900">{value.title}</h3>
                   <p className="text-gray-600">{value.description}</p>
-                </div>
+                </motion.div>
               ))}
             </div>
           </div>
-        </div>
+        </motion.section>
 
-        {/* Leadership Section */}
-        <div className="bg-gray-50 py-16">
+        {/* Team Section */}
+        <motion.section 
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+          className="py-16 bg-gray-50"
+        >
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-3xl font-bold text-center text-gray-900 mb-4">
-              Our Leadership
-            </h2>
-            <p className="text-xl text-center text-gray-600 max-w-3xl mx-auto mb-12">
-              Experienced attorneys guiding our firm with vision and expertise.
+            <motion.div
+              initial={{ y: 20, opacity: 0 }}
+              whileInView={{ y: 0, opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="text-center mb-16"
+            >
+              <h2 className="text-3xl font-bold text-gray-900 mb-4">Our Team</h2>
+              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+                Dedicated professionals guiding you through your immigration journey
+              </p>
+            </motion.div>
+            
+            <motion.div 
+              variants={staggerContainer}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8"
+            >
+              {teamMembers.map((member) => (
+                <motion.div
+                  variants={fadeIn}
+                  key={member.id}
+                  className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300"
+                >
+                  <div className="h-64 overflow-hidden">
+                    <img
+                      src={member.image}
+                      alt={member.name}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <div className="p-6 text-center">
+                    <h3 className="text-xl font-bold text-gray-900 mb-1">{member.name}</h3>
+                    <p className="text-blue-600 font-medium mb-3">{member.role}</p>
+                  </div>
+                </motion.div>
+              ))}
+            </motion.div>
+          </div>
+        </motion.section>
+
+        {/* CTA Section */}
+        <motion.section 
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+          className="py-16 bg-gradient-to-r from-blue-600 to-blue-800 text-white"
+        >
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 className="text-3xl font-bold mb-6">Ready to Begin Your Canadian Journey?</h2>
+            <p className="text-xl mb-8 max-w-3xl mx-auto">
+              Contact us today for a professional assessment of your immigration options.
             </p>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <div className="bg-white p-6 rounded-lg shadow-md text-center">
-                <img
-                  src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&auto=format&fit=crop"
-                  alt="James Wilson"
-                  className="w-32 h-32 rounded-full mx-auto mb-4 object-cover"
-                />
-                <h3 className="text-xl font-bold">James Wilson</h3>
-                <p className="text-blue-600 mb-2">Managing Partner</p>
-                <p className="text-gray-600">
-                  25+ years experience in corporate law
-                </p>
-              </div>
-              <div className="bg-white p-6 rounded-lg shadow-md text-center">
-                <img
-                  src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&auto=format&fit=crop"
-                  alt="Sarah Johnson"
-                  className="w-32 h-32 rounded-full mx-auto mb-4 object-cover"
-                />
-                <h3 className="text-xl font-bold">Sarah Johnson</h3>
-                <p className="text-blue-600 mb-2">Senior Partner</p>
-                <p className="text-gray-600">
-                  Specializes in litigation and dispute resolution
-                </p>
-              </div>
-              <div className="bg-white p-6 rounded-lg shadow-md text-center">
-                <img
-                  src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&auto=format&fit=crop"
-                  alt="Michael Chen"
-                  className="w-32 h-32 rounded-full mx-auto mb-4 object-cover"
-                />
-                <h3 className="text-xl font-bold">Michael Chen</h3>
-                <p className="text-blue-600 mb-2">Partner</p>
-                <p className="text-gray-600">
-                  Expert in intellectual property law
-                </p>
-              </div>
+            <div className="flex flex-col sm:flex-row justify-center gap-4">
+              <motion.a
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                href="/contact"
+                className="bg-white text-blue-600 font-bold py-3 px-8 rounded-lg shadow-md hover:shadow-lg transition-all"
+              >
+                Book An Appointment
+              </motion.a>
+              <motion.a
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                href="tel:+16476605758"
+                className="bg-transparent border-2 border-white text-white font-bold py-3 px-8 rounded-lg hover:bg-white hover:text-blue-600 transition-all"
+              >
+                Call: +1 647 660-5758
+              </motion.a>
             </div>
           </div>
-        </div>
+        </motion.section>
       </div>
       <Footer/>
     </>

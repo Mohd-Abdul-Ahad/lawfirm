@@ -4,18 +4,21 @@ import Navbar from "./Components/Navbar";
 import HomePage from "./pages/HomePage";
 import Experience from "./Components/Experience";
 import WhyChooseUs from "./pages/WhyChooseUs";
-import Testimonials from "./pages/Testimonials";
 import ContactUs from "./Components/ContactUs";
 import Footer from "./Components/Footer";
-
+import FAQSection from "./pages/FaqSection";
+import TeamSection from "./pages/TeamMembers";
+import ServicesSection from "./pages/ServicesSection";
 function App() {
   return (
     <>
       <Navbar />
       <HomePage />
       <Experience />
+      <ServicesSection/>
       <WhyChooseUs />
-      <Testimonials />
+      <FAQSection/>
+      <TeamSection/>
       <ContactUs />
       <Footer />
     </>

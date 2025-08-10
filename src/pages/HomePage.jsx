@@ -33,17 +33,17 @@ const HomePage = () => {
       <div className="relative z-10 h-full flex items-center px-4 sm:px-8 md:px-12 lg:px-20 xl:px-28">
         <div className="w-full text-white max-w-2xl space-y-6 text-center md:text-left mx-auto md:mx-0">
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold leading-tight logoFont animate-fadeInUp">
-            Clarity in law. <br />
-            Confidence in results.
+            Precision in process. <br />
+            Commitment in service.
           </h1>
 
           <p className="text-base sm:text-lg md:text-xl text-white/90 pMd animate-fadeInUp animation-delay-100">
-            Expert legal support tailored to your unique needs.
+            Expert immigration law for every step.
           </p>
 
           <button
             className="bg-[#2a65f8] hover:bg-[#1e4ed8] text-white px-6 py-3 sm:px-8 sm:py-3 rounded-xl font-semibold shadow-lg transition duration-300 ease-in-out hover:shadow-xl transform hover:-translate-y-1 animate-fadeInUp animation-delay-200 text-sm sm:text-base"
-            onClick={() => window.location.href = "#contact"}
+            onClick={() => (window.location.href = "#contact")}
           >
             Book Consultation
           </button>

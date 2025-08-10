@@ -1,93 +1,230 @@
 import React, { useState } from "react";
+import PhoneInput from 'react-phone-input-2';
+import 'react-phone-input-2/lib/style.css';
 
 const ContactUs = () => {
-  const [selectedCase, setSelectedCase] = useState("");
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: '',
+    country: '',
+    city: '',
+    postalCode: '',
+    organization: '',
+    message: ''
+  });
+  const [errors, setErrors] = useState({});
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const caseTypes = [
-    "Criminal Defense",
-    "Family Law",
-    "Civil Litigation",
-    "Corporate Law",
-    "Real Estate Law",
-    "Personal Injury"
-  ];
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+    // Clear error when user starts typing
+    if (errors[name]) {
+      setErrors(prev => ({
+        ...prev,
+        [name]: ''
+      }));
+    }
+  };
+
+  const handlePhoneChange = (value) => {
+    setFormData(prev => ({
+      ...prev,
+      phone: value
+    }));
+  };
+
+  const validateForm = () => {
+    const newErrors = {};
+    const requiredFields = ['firstName', 'lastName', 'email', 'phone', 'country', 'city', 'postalCode'];
+    
+    requiredFields.forEach(field => {
+      if (!formData[field]) {
+        newErrors[field] = 'Please fill this field';
+      }
+    });
+
+    // Email validation
+    if (formData.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      newErrors.email = 'Please enter a valid email';
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (validateForm()) {
+      // Form submission logic here
+      setIsSubmitted(true);
+      console.log('Form submitted:', formData);
+      // You can add your form submission logic here (API call, etc.)
+    }
+  };
 
   return (
-    <div className="max-w-4xl mx-auto py-12 px-4 sm:px-6" id="contact">
-      <h2 className="text-3xl md:text-4xl navFont text-center mb-10">
-        Contact Us
+    <div className="max-w-4xl mx-auto py-16 px-4 sm:px-6" id="contact">
+      <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-900">
+        Contact Our Legal Team
       </h2>
 
-      <div className="space-y-5">
-        {["First Name", "Last Name", "Email", "Phone Number", "Organization"].map((field, index) => (
-          <div key={index}>
-            <label className="block mb-1 text-gray-700">
-              {field} {field !== "Organization" && <span className="text-red-500">*</span>}
+      {isSubmitted ? (
+        <div className="text-center py-8">
+          <div className="text-green-600 text-2xl mb-4">Thank you for your inquiry!</div>
+          <p className="text-gray-700">We'll contact you shortly.</p>
+        </div>
+      ) : (
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label className="block mb-2 text-gray-700 font-medium">
+                First Name <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="text"
+                name="firstName"
+                value={formData.firstName}
+                onChange={handleChange}
+                placeholder="First Name"
+                className={`w-full border ${errors.firstName ? 'border-red-500' : 'border-gray-300'} rounded-lg px-4 py-3 focus:border-blue-600 focus:ring-2 focus:ring-blue-100 transition-all duration-300`}
+              />
+              {errors.firstName && <p className="text-red-500 text-sm mt-1">{errors.firstName}</p>}
+            </div>
+
+            <div>
+              <label className="block mb-2 text-gray-700 font-medium">
+                Last Name <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="text"
+                name="lastName"
+                value={formData.lastName}
+                onChange={handleChange}
+                placeholder="Last Name"
+                className={`w-full border ${errors.lastName ? 'border-red-500' : 'border-gray-300'} rounded-lg px-4 py-3 focus:border-blue-600 focus:ring-2 focus:ring-blue-100 transition-all duration-300`}
+              />
+              {errors.lastName && <p className="text-red-500 text-sm mt-1">{errors.lastName}</p>}
+            </div>
+
+            <div>
+              <label className="block mb-2 text-gray-700 font-medium">
+                Email <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                placeholder="Email"
+                className={`w-full border ${errors.email ? 'border-red-500' : 'border-gray-300'} rounded-lg px-4 py-3 focus:border-blue-600 focus:ring-2 focus:ring-blue-100 transition-all duration-300`}
+              />
+              {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
+            </div>
+
+            <div>
+              <label className="block mb-2 text-gray-700 font-medium">
+                Phone Number <span className="text-red-500">*</span>
+              </label>
+              <PhoneInput
+                country={'us'}
+                value={formData.phone}
+                onChange={handlePhoneChange}
+                inputClass={`w-full border ${errors.phone ? 'border-red-500' : 'border-gray-300'} rounded-lg px-4 py-3 focus:border-blue-600 focus:ring-2 focus:ring-blue-100`}
+                dropdownClass="border border-gray-300 rounded-lg shadow-lg"
+              />
+              {errors.phone && <p className="text-red-500 text-sm mt-1">{errors.phone}</p>}
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div>
+              <label className="block mb-2 text-gray-700 font-medium">
+                Country of Residence <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="text"
+                name="country"
+                value={formData.country}
+                onChange={handleChange}
+                placeholder="Country"
+                className={`w-full border ${errors.country ? 'border-red-500' : 'border-gray-300'} rounded-lg px-4 py-3 focus:border-blue-600 focus:ring-2 focus:ring-blue-100 transition-all duration-300`}
+              />
+              {errors.country && <p className="text-red-500 text-sm mt-1">{errors.country}</p>}
+            </div>
+
+            <div>
+              <label className="block mb-2 text-gray-700 font-medium">
+                City <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="text"
+                name="city"
+                value={formData.city}
+                onChange={handleChange}
+                placeholder="City"
+                className={`w-full border ${errors.city ? 'border-red-500' : 'border-gray-300'} rounded-lg px-4 py-3 focus:border-blue-600 focus:ring-2 focus:ring-blue-100 transition-all duration-300`}
+              />
+              {errors.city && <p className="text-red-500 text-sm mt-1">{errors.city}</p>}
+            </div>
+
+            <div>
+              <label className="block mb-2 text-gray-700 font-medium">
+                Postal Code <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="text"
+                name="postalCode"
+                value={formData.postalCode}
+                onChange={handleChange}
+                placeholder="Postal Code"
+                className={`w-full border ${errors.postalCode ? 'border-red-500' : 'border-gray-300'} rounded-lg px-4 py-3 focus:border-blue-600 focus:ring-2 focus:ring-blue-100 transition-all duration-300`}
+              />
+              {errors.postalCode && <p className="text-red-500 text-sm mt-1">{errors.postalCode}</p>}
+            </div>
+          </div>
+
+          <div>
+            <label className="block mb-2 text-gray-700 font-medium">
+              Organization (Optional)
             </label>
             <input
-              type={field === "Email" ? "email" : field === "Phone Number" ? "tel" : "text"}
-              placeholder={field}
-              className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:border-[#2a65f8] focus:ring-1 focus:ring-[#2a65f8] transition-all duration-300"
-              required={field !== "Organization"}
+              type="text"
+              name="organization"
+              value={formData.organization}
+              onChange={handleChange}
+              placeholder="Organization"
+              className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:border-blue-600 focus:ring-2 focus:ring-blue-100 transition-all duration-300"
             />
           </div>
-        ))}
 
-        <div>
-          <label className="block mb-1 text-gray-700">
-            Case Type <span className="text-red-500">*</span>
-          </label>
-          <div className="relative">
-            <button
-              className="w-full border border-gray-300 rounded-lg px-4 py-3 text-left flex justify-between items-center"
-              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-            >
-              {selectedCase || "Select a case type"}
-              <svg
-                className={`w-5 h-5 transform transition-transform ${isDropdownOpen ? "rotate-180" : ""}`}
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-              </svg>
-            </button>
-            
-            {isDropdownOpen && (
-              <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg">
-                {caseTypes.map((caseType) => (
-                  <div
-                    key={caseType}
-                    className="px-4 py-2 hover:bg-[#2a65f8] hover:text-white cursor-pointer transition-colors"
-                    onClick={() => {
-                      setSelectedCase(caseType);
-                      setIsDropdownOpen(false);
-                    }}
-                  >
-                    {caseType}
-                  </div>
-                ))}
-              </div>
-            )}
+          <div>
+            <label className="block mb-2 text-gray-700 font-medium">
+              Message (Optional)
+            </label>
+            <textarea
+              rows="5"
+              name="message"
+              value={formData.message}
+              onChange={handleChange}
+              className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:border-blue-600 focus:ring-2 focus:ring-blue-100 transition-all duration-300"
+              placeholder="Your message"
+            ></textarea>
           </div>
-        </div>
 
-        <div>
-          <label className="block mb-1 text-gray-700">
-            Message <span className="text-red-500">*</span>
-          </label>
-          <textarea
-            rows="4"
-            className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:border-[#2a65f8] focus:ring-1 focus:ring-[#2a65f8] transition-all duration-300"
-            required
-          ></textarea>
-        </div>
-
-        <button className="w-full bg-[#2a65f8] hover:bg-[#1e4ed8] text-white py-3 rounded-lg font-semibold shadow-md transition duration-300 mt-6">
-          Submit
-        </button>
-      </div>
+          <button 
+            type="submit"
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white py-4 rounded-lg font-semibold text-lg shadow-md transition duration-300 mt-8"
+          >
+            Get Consultation
+          </button>
+        </form>
+      )}
     </div>
   );
 };

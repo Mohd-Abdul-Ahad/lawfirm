@@ -5,26 +5,60 @@ html {
   scroll-behavior: smooth;
 }
 
-.logoFont{
- font-family: "Poppins", sans-serif;
+/* Updated Logo Styles */
+.logoFont {
+  font-family: "Poppins", sans-serif;
   font-weight: 800;
   font-style: normal;
 }
 
-.navFont{
- font-family: "Poppins", sans-serif;
+.logo-primary {
+  font-weight: 800;
+  color: #2563eb; /* blue-600 */
+  letter-spacing: -0.5px;
+}
+
+.logo-secondary {
+  font-weight: 600;
+  color: #1f2937; /* gray-800 */
+  letter-spacing: 0.5px;
+}
+
+/* Navigation Styles */
+.navFont {
+  font-family: "Poppins", sans-serif;
   font-weight: 600;
   font-style: normal;
 }
 
-.pMd{
- font-family: "Poppins", sans-serif;
+/* Paragraph Styles */
+.pMd {
+  font-family: "Poppins", sans-serif;
   font-weight: 500;
   font-style: normal;
 }
 
-.pB{
- font-family: "Poppins", sans-serif;
+.pB {
+  font-family: "Poppins", sans-serif;
   font-weight: 700;
   font-style: normal;
+}
+
+/* Dropdown Animation */
+.dropdown-enter {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+.dropdown-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: all 200ms ease;
+}
+.dropdown-exit {
+  opacity: 1;
+}
+.dropdown-exit-active {
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: all 200ms ease;
 }
