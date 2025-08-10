@@ -5,14 +5,17 @@ import {
   FaChevronDown,
   FaChevronUp,
   FaBars,
+  FaTimes,
 } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const [isServicesOpen, setIsServicesOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [copied, setCopied] = useState({ phone: false, email: false });
   const servicesRef = useRef(null);
+  const mobileMenuRef = useRef(null);
+  const navigate = useNavigate();
 
   const handleCopy = (text, type) => {
     navigator.clipboard.writeText(text).then(() => {
@@ -22,28 +25,41 @@ const Navbar = () => {
   };
 
   const services = [
-    "Inadmissibility",
-    "Immigration Appeals",
-    "Refugee Protection",
-    "PRRA",
-    "Judicial Review",
-    "Express Entry",
-    "Family Sponsorship",
-    "Business Class Immigration",
-    "Provincial Nominee Programs (PNP)",
-    "H&C PR applications",
-    "Student Visa (Study Permit)",
-    "Work Permits / LMIAs",
-    "Visitor Visa / eTA",
-    "Super Visa",
-    "Caregiver Program",
+    { name: "Inadmissibility", path: "/inadmissibilitylanding" },
+    { name: "Immigration Appeals", path: "/immigration-appeals" },
+    { name: "Refugee Protection", path: "/refugee-protection" },
+    { name: "PRRA", path: "/prra" },
+    { name: "Judicial Review", path: "/judicial-review" },
+    { name: "Express Entry", path: "/express-entry" },
+    { name: "Family Sponsorship", path: "/family-sponsorship" },
+    { name: "Business Class Immigration", path: "/business-immigration" },
+    { name: "Provincial Nominee Programs (PNP)", path: "/pnp" },
+    { name: "H&C PR applications", path: "/hc-applications" },
+    { name: "Student Visa (Study Permit)", path: "/study-permit" },
+    { name: "Work Permits / LMIAs", path: "/work-permits" },
+    { name: "Visitor Visa / eTA", path: "/visitor-visa" },
+    { name: "Super Visa", path: "/super-visa" },
+    { name: "Caregiver Program", path: "/caregiver-program" },
   ];
 
-  // Close dropdown when clicking outside
+  const handleServiceClick = (path) => {
+    navigate(path);
+    setIsServicesOpen(false);
+    setIsMobileMenuOpen(false);
+  };
+
+  // Close dropdowns when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (servicesRef.current && !servicesRef.current.contains(event.target)) {
         setIsServicesOpen(false);
+      }
+      if (
+        mobileMenuRef.current &&
+        !mobileMenuRef.current.contains(event.target) &&
+        !event.target.closest(".mobile-menu-button")
+      ) {
+        setIsMobileMenuOpen(false);
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
@@ -53,17 +69,17 @@ const Navbar = () => {
   }, []);
 
   return (
-    <div className="bg-white shadow-sm">
-      {/* Top Contact Bar */}
+    <div className="bg-white shadow-sm sticky top-0 z-50">
+      {/* Top Contact Bar - Now visible on all screens */}
       <div className="bg-gray-100 px-4 py-2">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
-          <div className="flex space-x-6">
+          <div className="flex flex-wrap gap-x-6 gap-y-2">
             <div
               className="flex items-center space-x-1 cursor-pointer group"
               onClick={() => handleCopy("+1 (647) 660-5758", "phone")}
             >
-              <FaPhone className="text-blue-600 group-hover:text-blue-800 transition" />
-              <span className="text-sm font-medium group-hover:text-blue-800 transition">
+              <FaPhone className="text-blue-600 group-hover:text-blue-800 transition text-sm sm:text-base" />
+              <span className="text-xs sm:text-sm font-medium group-hover:text-blue-800 transition">
                 {copied.phone ? "Copied!" : "+1 (647) 660-5758"}
               </span>
             </div>
@@ -73,8 +89,8 @@ const Navbar = () => {
                 handleCopy("info@northvistaimmigration.com", "email")
               }
             >
-              <FaEnvelope className="text-blue-600 group-hover:text-blue-800 transition" />
-              <span className="text-sm font-medium group-hover:text-blue-800 transition">
+              <FaEnvelope className="text-blue-600 group-hover:text-blue-800 transition text-sm sm:text-base" />
+              <span className="text-xs sm:text-sm font-medium group-hover:text-blue-800 transition whitespace-nowrap overflow-hidden text-ellipsis max-w-[180px] sm:max-w-none">
                 {copied.email ? "Copied!" : "info@northvistaimmigration.com"}
               </span>
             </div>
@@ -83,105 +99,127 @@ const Navbar = () => {
       </div>
 
       {/* Main Navbar */}
-      <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
-        {/* Logo - Left */}
-        {/* Logo - Left */}
+      <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+        {/* Logo */}
         <Link to="/" className="hover:opacity-90 transition-opacity">
           <div className="flex items-center">
             <img
               src="/logo.png"
-              alt="Northern Vista Law Firm Logo"
-              className="h-12 w-auto md:h-16" // Increased from h-8 to h-12 (mobile) and h-16 (desktop)
+              alt="North Vista Immigration Logo"
+              className="h-12 w-auto md:h-16"
             />
-            {/* Optional: Add text next to logo if needed */}
-            {/* <span className="ml-3 text-xl font-bold text-gray-800 hidden md:block">Northern Vista Law</span> */}
           </div>
         </Link>
 
-        {/* Desktop Navigation - Center */}
-        <div className="hidden md:flex items-center space-x-8">
+        {/* Desktop Navigation */}
+        <div className="hidden lg:flex items-center space-x-8">
           <nav className="flex items-center space-x-8">
             <Link
               to="/"
-              className="navFont text-gray-700 hover:text-blue-600 transition font-medium"
+              className="text-gray-700 hover:text-blue-600 transition font-medium text-lg"
             >
               Home
             </Link>
 
             <Link
               to="/aboutus"
-              className="navFont text-gray-700 hover:text-blue-600 transition font-medium"
+              className="text-gray-700 hover:text-blue-600 transition font-medium text-lg"
             >
               About Us
             </Link>
 
-            <Link
-              to="/#services"
-              className="navFont text-gray-700 hover:text-blue-600 transition font-medium"
-            >
-              Services
-            </Link>
+            <div className="relative" ref={servicesRef}>
+              <button
+                className="flex items-center text-gray-700 hover:text-blue-600 transition font-medium text-lg"
+                onClick={() => setIsServicesOpen(!isServicesOpen)}
+              >
+                Services
+                {isServicesOpen ? (
+                  <FaChevronUp className="ml-1 text-sm" />
+                ) : (
+                  <FaChevronDown className="ml-1 text-sm" />
+                )}
+              </button>
 
-            <a
-              href="/#testimonials"
-              className="navFont text-gray-700 hover:text-blue-600 transition font-medium"
+              {isServicesOpen && (
+                <div className="absolute left-0 mt-2 w-64 bg-white rounded-md shadow-lg py-1 z-50">
+                  {services.map((service, index) => (
+                    <button
+                      key={index}
+                      onClick={() => handleServiceClick(service.path)}
+                      className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition"
+                    >
+                      {service.name}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <Link
+              to="/#testimonials"
+              className="text-gray-700 hover:text-blue-600 transition font-medium text-lg"
             >
               Testimonials
-            </a>
+            </Link>
 
-            <a
-              href="/#ourteam"
-              className="navFont text-gray-700 hover:text-blue-600 transition font-medium"
+            <Link
+              to="/#ourteam"
+              className="text-gray-700 hover:text-blue-600 transition font-medium text-lg"
             >
               Our Team
-            </a>
+            </Link>
           </nav>
         </div>
 
-        {/* Desktop Book Button - Right */}
-        <div className="hidden md:block">
+        {/* Desktop Book Button */}
+        <div className="hidden lg:block">
           <Link
             to="/contact"
-            className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-semibold shadow-md transition duration-300 ease-in-out"
+            className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold shadow-md transition duration-300 ease-in-out text-lg"
           >
             Book Consultation
           </Link>
         </div>
 
-        {/* Mobile Menu Button - Right */}
-        <div className="flex items-center md:hidden space-x-4">
-          <Link
-            to="/contact"
-            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-semibold shadow-md transition duration-300 ease-in-out text-sm"
-          >
-            Book Now
-          </Link>
+        {/* Mobile Menu Button */}
+        <div className="flex items-center lg:hidden space-x-4">
+          
           <button
-            className="text-gray-700 focus:outline-none"
+            className="mobile-menu-button text-gray-700 focus:outline-none"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
-            <FaBars className="h-6 w-6" />
+            {isMobileMenuOpen ? (
+              <FaTimes className="h-6 w-6" />
+            ) : (
+              <FaBars className="h-6 w-6" />
+            )}
           </button>
         </div>
       </div>
 
       {/* Mobile Menu */}
       {isMobileMenuOpen && (
-        <div className="md:hidden bg-white border-t border-gray-200 px-4 py-2">
+        <div
+          ref={mobileMenuRef}
+          className="lg:hidden bg-white border-t border-gray-200 px-4 py-2 absolute w-full left-0 shadow-lg z-40"
+        >
           <Link
             to="/"
-            className="block py-2 text-gray-700 hover:text-blue-600 transition font-medium"
+            className="block py-3 text-gray-700 hover:text-blue-600 transition font-medium border-b border-gray-100"
+            onClick={() => setIsMobileMenuOpen(false)}
           >
             Home
           </Link>
           <Link
             to="/aboutus"
-            className="block py-2 text-gray-700 hover:text-blue-600 transition font-medium"
+            className="block py-3 text-gray-700 hover:text-blue-600 transition font-medium border-b border-gray-100"
+            onClick={() => setIsMobileMenuOpen(false)}
           >
             About Us
           </Link>
 
-          <div className="py-2">
+          <div className="py-3 border-b border-gray-100">
             <button
               className="flex items-center justify-between w-full text-gray-700 hover:text-blue-600 transition font-medium"
               onClick={() => setIsServicesOpen(!isServicesOpen)}
@@ -195,35 +233,31 @@ const Navbar = () => {
             </button>
 
             {isServicesOpen && (
-              <div className="pl-4 mt-1 space-y-1">
+              <div className="pl-4 mt-2 space-y-2">
                 {services.map((service, index) => (
-                  <Link
+                  <button
                     key={index}
-                    to={`/services/${service
-                      .toLowerCase()
-                      .replace(/\s+/g, "-")}`}
-                    className="block py-1 text-gray-700 hover:text-blue-600 transition"
-                    onClick={() => {
-                      setIsServicesOpen(false);
-                      setIsMobileMenuOpen(false);
-                    }}
+                    onClick={() => handleServiceClick(service.path)}
+                    className="block w-full text-left py-2 text-gray-700 hover:text-blue-600 transition border-b border-gray-100 last:border-0"
                   >
-                    {service}
-                  </Link>
+                    {service.name}
+                  </button>
                 ))}
               </div>
             )}
           </div>
 
           <Link
-            to="/testimonials"
-            className="block py-2 text-gray-700 hover:text-blue-600 transition font-medium"
+            to="/#testimonials"
+            className="block py-3 text-gray-700 hover:text-blue-600 transition font-medium border-b border-gray-100"
+            onClick={() => setIsMobileMenuOpen(false)}
           >
             Testimonials
           </Link>
           <Link
-            to="/ourteam"
-            className="block py-2 text-gray-700 hover:text-blue-600 transition font-medium"
+            to="/#ourteam"
+            className="block py-3 text-gray-700 hover:text-blue-600 transition font-medium border-b border-gray-100"
+            onClick={() => setIsMobileMenuOpen(false)}
           >
             Our Team
           </Link>
@@ -234,3 +268,4 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
